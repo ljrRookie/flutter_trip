@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_trip/dao/home_dao.dart';
 import 'package:flutter_trip/model/common_model.dart';
+import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
+import 'package:flutter_trip/model/sales_box_model.dart';
+import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
+import 'package:flutter_trip/widget/sales_box.dart';
+import 'package:flutter_trip/widget/sub_nav.dart';
 const APPBAR_SCROLL_OFFSET = 100;
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +23,10 @@ class _HomePageState extends State<HomePage> {
     'https://img.zcool.cn/community/0122d8560893be6ac7251df815afc9.jpg@1280w_1l_2o_100sh.png'
   ];
   List<CommonModel> localNavList = []; //local导航
+  List<CommonModel> bannerList = []; //轮播图列表
+  List<CommonModel> subNavList = []; //轮播图列表
+  SalesBoxModel salesBoxModel;
+  GridNavModel gridNav; //网格卡片
   double appBarAlpha = 0;
   String resultString ="";
   @override
@@ -30,6 +39,10 @@ class _HomePageState extends State<HomePage> {
       HomeModel model = await HomeDao.fetch();
       setState(() {
         localNavList = model.localNavList;
+        bannerList = model.bannerList;
+        gridNav = model.gridNav;
+        subNavList = model.subNavList;
+        salesBoxModel = model.salesBox;
       });
     }catch(e){
      print(e);
@@ -57,11 +70,11 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   height: 180,
                   child: Swiper(
-                    itemCount: _imageUrls.length,
+                    itemCount: bannerList.length,
                     autoplay: true,
                     itemBuilder: (BuildContext context, int index) {
                       return Image.network(
-                        _imageUrls[index],
+                        bannerList[index].icon,
                         fit: BoxFit.fill,
                       );
                     },
@@ -69,12 +82,23 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Padding(padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
-                child:  LocalNav(localNavList: localNavList,)),
+                child:  LocalNav(localNavList: localNavList,)
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                  child: GridNav(gridNavModel: gridNav),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                  child: SubNav(subNavList: subNavList),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                  child: SaleBox(salesBoxModel: salesBoxModel),
+                ),
                 Container(
-                  height: 800,
-                  child: ListTile(
-                    title: Text('sdfadfasdfa'),
-                  ),
+                  height: 40,
+                  child: Text('--- 我是有底线的 ---',textAlign: TextAlign.center,style: TextStyle(fontSize: 18),)
                 )
               ],
             ),
@@ -87,8 +111,8 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(color: Colors.blue),
             child: Center(
               child: Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: Text('首页'),
+                padding: EdgeInsets.only(top: 35),
+                child: Text('首页',style: TextStyle(fontSize: 20,color: Colors.white),),
               ),
             ),
           ),
