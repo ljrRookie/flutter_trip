@@ -5,6 +5,7 @@ import 'package:flutter_trip/model/common_model.dart';
 import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
 import 'package:flutter_trip/model/sales_box_model.dart';
+import 'package:flutter_trip/pages/search_page.dart';
 import 'package:flutter_trip/util/NavigatorUtil.dart';
 import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/loading_container.dart';
@@ -88,7 +89,6 @@ class _HomePageState extends State<HomePage> {
                         child: ListView(
                           children: <Widget>[
                             Container(
-
                               height: 190,
                               child: Swiper(
                                 itemCount: bannerList.length,
@@ -197,11 +197,11 @@ class _HomePageState extends State<HomePage> {
 
   //跳转搜索页面
   void _jumpToSearch() {
-    /*  NavigatorUtil.push(
+      NavigatorUtil.push(
         context,
         SearchPage(
           hint: SEARCH_BAR_DEFAULT_TEXT,
-        ));*/
+        ));
   }
 
   //跳转语音识别页面
