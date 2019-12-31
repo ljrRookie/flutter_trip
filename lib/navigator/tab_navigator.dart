@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
+import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 import 'package:flutter_trip/pages/home_page.dart';
 import 'package:flutter_trip/pages/my_page.dart';
 import 'package:flutter_trip/pages/search_page.dart';
@@ -16,11 +18,16 @@ class _TabNavigatorState extends State<TabNavigator> {
   final PageController _pageController = PageController(
     initialPage: 0,
   );
-
+@override
+  void initState() {
+  hideScreen();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: <Widget>[
           HomePage(),
@@ -41,52 +48,35 @@ class _TabNavigatorState extends State<TabNavigator> {
         },
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: _defaultColor),
-              activeIcon: Icon(
-                Icons.home,
-                color: _activeColor,
-              ),
-              title: Text(
-                '首页',
-                style: TextStyle(
-                    color: _currentIndex != 0 ? _defaultColor : _activeColor),
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search, color: _defaultColor),
-              activeIcon: Icon(
-                Icons.search,
-                color: _activeColor,
-              ),
-              title: Text(
-                '搜索',
-                style: TextStyle(
-                    color: _currentIndex != 1 ? _defaultColor : _activeColor),
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.camera_alt, color: _defaultColor),
-              activeIcon: Icon(
-                Icons.camera_alt,
-                color: _activeColor,
-              ),
-              title: Text(
-                '旅拍',
-                style: TextStyle(
-                    color: _currentIndex != 2 ? _defaultColor : _activeColor),
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle, color: _defaultColor),
-              activeIcon: Icon(
-                Icons.account_circle,
-                color: _activeColor,
-              ),
-              title: Text(
-                '首页',
-                style: TextStyle(
-                    color: _currentIndex != 3 ? _defaultColor : _activeColor),
-              )),
+          _bottomItem(Icons.home, '首页', 0),
+          _bottomItem(Icons.search, '搜索', 1),
+          _bottomItem(Icons.camera_alt, '旅拍', 2),
+          _bottomItem(Icons.account_circle, '我的', 3),
+
         ],
       ),
     );
+  }
+  BottomNavigationBarItem _bottomItem(IconData icon,String title,int index){
+    return BottomNavigationBarItem(
+      icon: Icon(
+        icon,
+        color: _defaultColor,
+      ),
+      activeIcon: Icon(
+        icon,
+        color: _activeColor,
+      ),
+      title: Text(
+        title,
+          style: TextStyle(
+            color: _currentIndex != index ? _defaultColor : _activeColor
+          ),
+      )
+    );
+  }
+
+  Future<void> hideScreen()  {
+      FlutterSplashScreen.hide();
   }
 }

@@ -179,10 +179,13 @@ class _HomePageState extends State<HomePage> {
     } else if (alpha > 1) {
       alpha = 1;
     }
-    setState(() {
-      appBarAlpha = alpha;
-    });
-    print(appBarAlpha);
+    if(0 <= alpha && alpha <= 1){
+      setState(() {
+        appBarAlpha = alpha;
+      });
+    }
+
+    //print(appBarAlpha);
   }
 
   //跳转到城市列表
